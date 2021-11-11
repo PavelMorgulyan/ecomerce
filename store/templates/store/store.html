@@ -1,0 +1,46 @@
+{% extends 'store/cart.html' %}
+{% load static %}
+{% block content %}
+	<div class="row">
+		<div class="col-lg-4">
+			<div class="box-element product">
+				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+				<h4><strong>Product 1</strong></h4>
+				<hr>
+				<button class="btn-outline-secondary add-btn">Add to Cart</button>
+				<a class="btn btn-outline-success" href="#">View</a>
+				<h4 style="display: inline-block; float:right"><strong>$20</strong></h4>
+				
+			</div>
+		</div>
+		
+		<div class="col-lg-4">
+			<div class="box-element product">
+				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+				
+					<h4><strong>Product 2</strong></h4>
+					<hr>
+					<button class="btn-outline-secondary add-btn">Add to Cart</button>
+					<a class="btn btn-outline-success" href="#">View</a>
+					<h4 style="display: inline-block; float:right"><strong>$15</strong></h4>
+			</div>
+		</div>
+		
+		<div class="col-lg-4">
+			<div class="box-element product">
+				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
+				
+					<h4><strong>Product 3</strong></h4>
+					<hr>
+					<button class="btn-outline-secondary add-btn">Add to Cart</button>
+					<a class="btn btn-outline-success" href="#">View</a>
+					<h4 style="display: inline-block; float:right"><strong>$10</strong></h4>
+				
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+
+
