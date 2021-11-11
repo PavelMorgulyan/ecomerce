@@ -1,46 +1,21 @@
-{% extends 'store/cart.html' %}
+{% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
 	<div class="row">
+		{% for product in products %}
 		<div class="col-lg-4">
+			<img class="thumbnail" src="{% static 'images/placeholder.png' %}">
 			<div class="box-element product">
-				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
-				<h4><strong>Product 1</strong></h4>
+				<h6><strong>{{product.name}}</strong></h6>
 				<hr>
-				<button class="btn-outline-secondary add-btn">Add to Cart</button>
+
+				<button  class="btn btn-outline-secondary add-btn">Add to Cart</button>
 				<a class="btn btn-outline-success" href="#">View</a>
-				<h4 style="display: inline-block; float:right"><strong>$20</strong></h4>
-				
+				<h4 style="display: inline-block; float: right"><strong>${{product.price}}</strong></h4>
+
 			</div>
 		</div>
-		
-		<div class="col-lg-4">
-			<div class="box-element product">
-				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
-				
-					<h4><strong>Product 2</strong></h4>
-					<hr>
-					<button class="btn-outline-secondary add-btn">Add to Cart</button>
-					<a class="btn btn-outline-success" href="#">View</a>
-					<h4 style="display: inline-block; float:right"><strong>$15</strong></h4>
-			</div>
-		</div>
-		
-		<div class="col-lg-4">
-			<div class="box-element product">
-				<img class="thumbnail" src="{% static 'images/placeholder.png'%}">
-				
-					<h4><strong>Product 3</strong></h4>
-					<hr>
-					<button class="btn-outline-secondary add-btn">Add to Cart</button>
-					<a class="btn btn-outline-success" href="#">View</a>
-					<h4 style="display: inline-block; float:right"><strong>$10</strong></h4>
-				
-			</div>
-		</div>
+		{% endfor %}
 	</div>
 
 {% endblock content %}
-
-
-
