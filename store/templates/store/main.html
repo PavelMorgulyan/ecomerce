@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>Ecom</title>
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -10,7 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
 	<script type="text/javascript">
-		var user = '{{request.user}}';
+		var user = '{{request.user}}'
 
 		function getToken(name) {
 		    var cookieValue = null;
@@ -27,10 +28,10 @@
 		    }
 		    return cookieValue;
 		}
-		var csrftoken = getToken('csrftoken');
+		var csrftoken = getToken('csrftoken')
 
 		function getCookie(name){
-			// Split cookie string and get all individual name=value paris in an array
+			// Split cookie string and get all individual name=value pairs in an array
 				var cookieArr = document.cookie.split(";");
 
 				// Loop throught the array elements
@@ -41,6 +42,7 @@
 						Removing whitespace at the beggining of the cookie name and compare it with the given string					
 					*/
 					if(name == cookiePair[0].trim()){
+												   
 						return decodeURIComponent(cookiePair[1]);
 					}
 				}
@@ -48,19 +50,21 @@
 				return null;
 		}
 
-		var cart = JSON.parse(getCookie('cart'));
+		var cart = JSON.parse(getCookie('cart'))
 
 		if(cart == undefined){
-			cart = {};
-			console.log('Cart Created!', cart);
-			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/";
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 		}
-		console.log('Cart:', cart)
+		console.log('My Cart:', cart)
+ 
 	</script>
 
 </head>
 
 <body>
+
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a class="navbar-brand" href="{% url 'store' %}">Ecom</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,13 +81,21 @@
 		</div>
 			<div class="form-inline my-2 my-lg-0">
 				<a href="#" class="btn btn-warning">Login</a>
-				
+				<a href="" class="btn btn-warning">Log out</a>
+
 				<a href="{% url 'cart' %}">
 					<img id="cart-icon" src="{% static 'images/cart.png' %}">
 				</a>
 				<p id="cart-total">{{cartItems}}</p>
+
+		   
 			</div>
+			
 	</nav>
+
+							
+				
+							   
 
 
 	<hr>
@@ -93,6 +105,7 @@
 		
 		{% endblock content %}
 	</div>
+
 
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 
