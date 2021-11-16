@@ -34,22 +34,15 @@
 							<input class="form-control" type="text" name="country" placeholder="Zip code..">
 						</div>
 					</div>
-
-	 
-
 					<hr>
 					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-	
-	
-	 
-	
 				</form>
 			</div>
 
 			<br>
 			<div class="box-element hidden" id="payment-info">
 				<small>Paypal Options</small>
-				<!--<button id="make-payment">Make payment</button>-->
+				<button id="make-payment">Make payment</button>
 				<div id="paypal-button-container"></div>
 			</div>
 			
@@ -63,7 +56,7 @@
 				<hr>
 				{% for item in items %}
 				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+					<div style="flex:2"><img class="row-image" src="{% static 'images/'%}{{item.product.image}}"></div>
 					<div style="flex:2"><p>{{item.product.name}}</p></div>
 					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
 					<div style="flex:1"><p>x{{item.quantity}}</p></div>
@@ -77,6 +70,7 @@
 
 	<!--<script src="https://www.paypal.com/sdk/js?client-id=ARCk7_B2WwyYTKPqbsTn0BwfEwotMyYIs82rvyYJ0l64M0pXo8FBTL1SsLCnQdTYOr0YsNi0mVEOF3Kj&currency=USD&disable-funding=credit"></script> -->
 	<!--<script src="https://www.paypal.com/sdk/js?client-id=YOUR-CLIENT-ID&currency=USD&disable-funding=credit"></script>
+		
 	<script>
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
@@ -113,15 +107,13 @@
 		var shipping = '{{order.shipping}}'
 		var total = '{{order.get_cart_total}}'
 						   
-														  
-   
-
 		if (shipping == 'False'){
+			console.log('shipping == False in checkout.html')	
 		 	document.getElementById('shipping-info').innerHTML = ''
 		}
 
 		if (user != 'AnonymousUser'){
-															   
+			console.log('User is AnonymousUser in checkout.html')											   
 		 	document.getElementById('user-info').innerHTML = ''
 		 }
 																	  
@@ -140,11 +132,11 @@
 	    	document.getElementById('form-button').classList.add("hidden");
 	    	document.getElementById('payment-info').classList.remove("hidden");
 	    })
-	    /*
+	    
 	    document.getElementById('make-payment').addEventListener('click', function(e){
 	    	submitFormData()
 	    })
-	    */
+	    
 
 	    function submitFormData(){
 	    	console.log('Payment button clicked')

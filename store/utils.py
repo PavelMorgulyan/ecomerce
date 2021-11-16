@@ -26,7 +26,7 @@ def cookieCart(request):
 			item = {
 				'id':product.id,
 				'product':{'id':product.id,'name':product.name, 'price':product.price, 
-				'imageURL':product.imageURL}, 'quantity':cart[i]['quantity'],
+				'image':product.image}, 'quantity':cart[i]['quantity'],
 				'digital':product.digital,'get_total':total,
 				}
 			items.append(item)
@@ -45,6 +45,7 @@ def cartData(request):
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
 	else:
+		print("User is not authenticated")
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
 		order = cookieData['order']
