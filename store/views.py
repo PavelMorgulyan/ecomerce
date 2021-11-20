@@ -3,16 +3,18 @@ from django.http import JsonResponse
 import json
 import datetime
 from .models import * 
-from .utils import cookieCart, cartData, guestOrder
+from .utils import cookieCart, cartData, guestOrder, customerOrders
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 # from django.contrib.auth.forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
+from .decorators import unaunthenticated_user, allowed_users
 
+# @allowed_users
 def store(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -23,21 +25,17 @@ def store(request):
 	context = {'products':products, 'cartItems':cartItems}
 	return render(request, 'store/store.html', context)
 
+# @unaunthenticated_user
 def loginPage(request):
 	if request.method == 'POST':
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 
 		user = authenticate(request,username=username, password=password)
-		customer = user
-		customer = authenticate(request, customer = customer, password=password)
-		print("Username is", username)
-		print("password is", password)	
-		print("user is", user)	
+
 		try:
 			if user is not None:
 				login(request, user)
-				# redirect('main')
 				return redirect('store')
 			else:
 				messages.info(request, 'Username OR password in not correct')
@@ -52,24 +50,52 @@ def logoutPage(request):
 	logout(request)
 	return redirect('login')
 
+@login_required(login_url='login') # Стандартный декоратор из django.contrib.auth.decorators
+def userPage(request):
+	orders = customerOrders(request)['orders']
+	help = orders[:]
+	orders_q_set = orders[:len(help) - 1]
+	orders_q_set.append(help[len(help):])
+	orders_q_set.remove([])
+	print("orders_q_set:", orders_q_set)
+	order_number = len(orders_q_set)
+	orderitems = customerOrders(request)['orderitems']
+	shipping_addresses = customerOrders(request)['shipping_address']
+	context = {'orders':orders_q_set, 'orderitems':orderitems, 'shipping_addresses':shipping_addresses}
+	return render(request, 'store/user.html', context)
+
+@unaunthenticated_user
 def registrationPage(request):
 	if request.user.is_authenticated:
+		logout(request)
 		return redirect('store')
 	else:
 		form = CreateUserForm()
 		if request.method == 'POST':
 			form = CreateUserForm(request.POST)
 			if form.is_valid():
-				
-				form.save()
-				user=form.cleaned_data.get('username')
-				messages.success(request, 'Account was created for' + user)
+				user = form.save()
+				username=form.cleaned_data.get('username')
+				group = Group.objects.get(name='customer') # Добавили пользователя user в группу customer
+				user.groups.add(group)
+
+				email=form.cleaned_data.get('email')
+
+				Customer.objects.create(
+					user=user,
+					name=username,
+					email=email,
+					#phone="",
+					#vk_link="",
+					)
+
+				messages.success(request, 'Account was created for' + username)
 				return redirect('login') # переходим в login.html
 
 		context = {'form':form}
 		return render(request, 'store/registration.html', context)
 
-
+# @login_required(login_url='login')
 def cart(request):
 	data = cartData(request)
 	cartItems = data['cartItems']
@@ -78,6 +104,7 @@ def cart(request):
 
 	context = {'items':items, 'order':order, 'cartItems':cartItems}
 	return render(request, 'store/cart.html', context)
+
 
 def checkout(request):
 	data = cartData(request)
@@ -117,7 +144,7 @@ def updateItem(request):
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
-
+	print("def processOrder(request): transaction_id = ", transaction_id)
 	if request.user.is_authenticated:
 		customer = request.user.customer
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -143,3 +170,22 @@ def processOrder(request):
 		)
 
 	return JsonResponse('Payment submitted..', safe=False)
+
+def newUserInfo(request):
+
+	data = json.loads(request.body)
+	print("data = ", data)
+	vk_link = data['form']['vklink']
+	phone = data['form']['phone']
+	customer = Customer.objects.all().filter(id=data['form']['id']).update(vk_link = vk_link,
+			phone = phone,)
+	print("customer:", customer)
+	"""customer, created = Customer.objects.get_or_create(
+			id = id,
+			name = name,
+			email = email,
+			vk_link = vk_link,
+			phone = phone,
+			) 
+	customer.save()"""
+	return JsonResponse('New info submitted..', safe=False)

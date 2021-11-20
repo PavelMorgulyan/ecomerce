@@ -41,6 +41,7 @@ def cookieCart(request):
 def cartData(request):
 	if request.user.is_authenticated:
 		customer = request.user.customer
+		print("customer:", customer)
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
@@ -52,6 +53,35 @@ def cartData(request):
 		items = cookieData['items']
 
 	return {'cartItems':cartItems ,'order':order, 'items':items}
+
+def customerOrders(request):
+	if request.user.is_authenticated:
+		customer = request.user.customer
+		
+		customer_id = customer.id
+		orders = Order.objects.all().filter(customer_id=customer_id)
+		# print("orders:", orders)
+		orderitems = []
+		shipping_address = []
+		for order_id in orders:
+			temp_orderitems = OrderItem.objects.all().filter(order_id=order_id)
+			temp_shipping_address = ShippingAddress.objects.all().filter(order_id=order_id)
+			shipping_address.append(temp_shipping_address)
+			orderitems.append(temp_orderitems)
+		orderitems = dict(zip([i for i in range(len(orderitems)-1)], orderitems[:-1]))
+		shipping_address = dict(zip([i for i in range(len(shipping_address)-1)], shipping_address[:-1]))
+	return {'orders':orders, 'orderitems':orderitems, 'shipping_address':shipping_address}
+
+class ListAsQuerySet(list):
+	def __init__(self, *args, model, **kwargs):
+		self.model = model
+		super().__init__(*args, **kwargs)
+	
+	def filter(self, *args, **kwargs):
+		return self # we can custom filter
+	
+	def order_by(self, *args, model, **kwargs):
+		return self
 
 def guestOrder(request, data):
 	name = data['form']['name']

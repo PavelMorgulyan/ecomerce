@@ -19,6 +19,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200, null=True)),
                 ('email', models.CharField(max_length=200)),
                 ('user', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('vk_link', models.CharField(max_length=200)),
+                ('phone', models.CharField(max_length=200)),
             ],
         ),
         migrations.CreateModel(

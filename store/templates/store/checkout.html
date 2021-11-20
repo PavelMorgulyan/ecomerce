@@ -31,7 +31,7 @@
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
 						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
+							<input class="form-control" type="text" name="country" placeholder="Country..">
 						</div>
 					</div>
 					<hr>
@@ -108,12 +108,10 @@
 		var total = '{{order.get_cart_total}}'
 						   
 		if (shipping == 'False'){
-			console.log('shipping == False in checkout.html')	
 		 	document.getElementById('shipping-info').innerHTML = ''
 		}
 
-		if (user != 'AnonymousUser'){
-			console.log('User is AnonymousUser in checkout.html')											   
+		if (user != 'AnonymousUser'){										   
 		 	document.getElementById('user-info').innerHTML = ''
 		 }
 																	  
@@ -126,6 +124,7 @@
 		}
 
 		var form = document.getElementById('form')
+		console.log("form:", form)
 		form.addEventListener('submit', function(e){
 	    	e.preventDefault()
 	    	console.log('Form Submitted...')
@@ -166,6 +165,10 @@
 	    		userFormData.name = form.name.value
 	    		userFormData.email = form.email.value
 	    	}
+			else{
+				userFormData.name = '{{request.user}}'
+	    		userFormData.email = '{{request.user.email}}'
+			}
 
 	    	console.log('Shipping Info:', shippingInfo)
 	    	console.log('User Info:', userFormData)

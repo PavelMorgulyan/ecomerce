@@ -56,6 +56,53 @@ class Order(models.Model):
 		total = sum([item.quantity for item in orderitems])
 		image = models.ImageField(null=True, blank=True)
 		return total 
+	
+	@property
+	def get_cart_address(self):
+		try:
+			order_address = str(self.shippingaddress_set.all().filter(order_id=self.id)[0]).split(",")
+			return order_address[0]
+		except:
+			return "No address - error in order_id" + str(self.id)
+		# return order_address
+
+	@property
+	def get_cart_city(self):
+		try:
+			order_city = str(self.shippingaddress_set.all().filter(order_id=self.id)[0]).split(",")
+			return order_city[1]
+		except:
+			return "No city - error in order_id" + str(self.id)
+
+	@property
+	def get_cart_state(self):
+		try:
+			order_state = str(self.shippingaddress_set.all().filter(order_id=self.id)[0]).split(",")
+			return order_state[2]
+		except:
+			return "No city - error in order_id" + str(self.id)
+
+	@property
+	def get_cart_zipcode(self):
+		try:
+			order_state = str(self.shippingaddress_set.all().filter(order_id=self.id)[0]).split(",")
+			return order_state[3]
+		except:
+			return "No city - error in order_id" + str(self.id)
+
+	@property
+	def order_number(self):
+		orders = Order.objects.all().filter(customer_id=self.customer_id)
+		index = 0
+		this_order = Order.objects.all().filter(id=self.id)
+		for order_ind in orders:
+			print("order_ind = ", order_ind)
+			index +=1
+			if order_ind == this_order[0]:
+				break
+		return str(index)
+
+
 
 class OrderItem(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
@@ -78,5 +125,6 @@ class ShippingAddress(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-	    return self.address
+        return self.address +","+ self.city +","+ self.state +","+ self.zipcode
+
 
