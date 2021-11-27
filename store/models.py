@@ -9,6 +9,8 @@ class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
 	name = models.CharField(max_length=200, null=True)
 	email = models.CharField(max_length=200)
+	vk_link = models.CharField(max_length=200)
+	phone = models.CharField(max_length=200)
 
 	def __str__(self):
 		return self.name
@@ -101,8 +103,6 @@ class Order(models.Model):
 			if order_ind == this_order[0]:
 				break
 		return str(index)
-
-
 
 class OrderItem(models.Model):
 	product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)

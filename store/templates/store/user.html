@@ -19,29 +19,52 @@
 	}
    </style>
 	<div class="row">
-        <div class="col-lg-3"><div > <h6><strong>Информация о пользователе</strong></h6></div>
+        <div class="col-lg-3"><div> <h6><strong>Информация о пользователе</strong></h6></div>
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
 					<div >
 						Имя:
-						<input class="form-control" type="text" name="name" value="{{request.user}}">
+						<input class="form-control" type="text" name="name" value="{{customer_name}}">
 					</div>
 					<div>
 						Адрес почты:
-						<input required class="form-control" type="email" name="email" value="{{request.user.email}}">
+						<input required class="form-control" type="email" name="email" value="{{customer_email}}">
+					</div>
+					<div>
+						Новый пароль:
+						<input required class="form-control" type="password" name="password1" value="">
+					</div>
+					<div>
+						Новый пароль повторно:
+						<input required class="form-control" type="password" name="password2" value="">
 					</div>
 					<div>
 						Телефон:
-						<input required class="form-control" type="phone" name="phone" value="{{request.user.phone}}">
+						<input required class="form-control" type="phone" name="phone" value="{{customer_phone}}">
 					</div>
 					<div>
 						Ссылка на vk:
-						<input required class="form-control" type="vk_link" name="vk_link" value="{{request.user.vk_link}}">
+						<input required class="form-control" type="vk_link" name="vk_link" value="{{customer_vk_link}}">
 						<br>
-						<a style="float:center" class="btn btn-outline-dark" href="{% url 'user' %}" id="get-new-user-info"> Сохранить изменения</a>
+						<input class="btn btn-success" id="save-new-user-info" type="submit" value="Сохранить изменения"></input>
+					</div>
+					<div> 
+						<br>
 					</div>	
+					<!-- <div> 
+						<input class="btn btn-success" id="save-new-user-password" type="submit" value="Изменить пароль"></input>
+					</div>	 -->
             	</form>
 			</div>
+			
+			<!-- <div class="box-element hidden" id="password-new-info">
+				<small>Новый пароль:</small>
+				<input required class="form-control" type="password" name="password1" value="" placeholder="">
+				<br>
+				<small>Снова новый пароль:</small>
+				<input required class="form-control" type="password" name="password2" value="" placeholder="">
+			</div> -->
+
         </div>
 		<div class="col-lg-9">
 			<div> <h6><strong>Информация о заказах</strong></h6></div>
@@ -87,16 +110,16 @@
 								<a style="float:center; margin:5px;">{{order.get_cart_zipcode}}</a>
 							</td>
 						</tr>
+						
 					</table>
 					
 				</div>
 				<a  style="float:center; margin:5px;" class="btn btn-success ">Подробности</a>
+				
 			</div>
 			{% endfor %}
 			<div class="box-element">
-
-				<a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
-
+				<a  class="btn btn-success" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
 			</div>
 			
 
@@ -112,24 +135,15 @@
 	    	console.log('Form Submitted...')
 	    	
 	    })
-		
-		const userFormData = {
-				'id':null,
-				'name':null,
-				'email':null,
-				'phone':null,
-				'vklink':null,
-			}
 
-			userFormData.id = '{{requesrt.user.id}}'
-			userFormData.name = form.name.value
-	    	userFormData.email = form.email.value
-			userFormData.phone = form.phone.value
-			userFormData.vklink = form.vk_link.value
+		/* form.addEventListener('submit', function(e){
+	    	e.preventDefault()
+	    	console.log('Form Submitted...')
+	    	document.getElementById('form-control').classList.add("hidden");
+	    	document.getElementById('password-new-info').classList.remove("hidden");
+	    }) */
 
-	    	console.log('User Info:', userFormData)
-
-		document.getElementById('get-new-user-info').addEventListener('click', function(e){
+		document.getElementById('save-new-user-info').addEventListener('click', function(e){
 	    	submitFormData()
 	    })
 	    
@@ -143,14 +157,18 @@
 				'email':null,
 				'phone':null,
 				'vklink':null,
+				'password1':null,
+				'password2':null,
 			}
 
-			userFormData.id = '{{requesrt.user.id}}'
+			userFormData.id = '{{request.user.id}}'
 			userFormData.name = form.name.value
 	    	userFormData.email = form.email.value
 			userFormData.phone = form.phone.value
 			userFormData.vklink = form.vk_link.value
-
+			userFormData.password1 = form.password1.value
+			userFormData.password2 = form.password1.value
+			
 	    	console.log('User Info:', userFormData)
 
 	    	var url = "/new_user_info/"
@@ -166,12 +184,8 @@
 	    	.then((response) => response.json())
 	    	.then((data) => {
 				console.log('Success:', data);
-				alert('Transaction completed');  
-
-				user_data = {}
-				document.cookie ='user_data=' + JSON.stringify(user_data) + ";domain=;path=/"
-
-
+				alert('Update user info completed');  
+				location.reload();
 				})
 	    }
 

@@ -57,10 +57,7 @@ def cartData(request):
 def customerOrders(request):
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		
-		customer_id = customer.id
-		orders = Order.objects.all().filter(customer_id=customer_id)
-		# print("orders:", orders)
+		orders = Order.objects.all().filter(customer_id=customer.id)
 		orderitems = []
 		shipping_address = []
 		for order_id in orders:

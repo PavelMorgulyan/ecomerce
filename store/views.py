@@ -57,11 +57,14 @@ def userPage(request):
 	orders_q_set = orders[:len(help) - 1]
 	orders_q_set.append(help[len(help):])
 	orders_q_set.remove([])
-	print("orders_q_set:", orders_q_set)
-	order_number = len(orders_q_set)
 	orderitems = customerOrders(request)['orderitems']
 	shipping_addresses = customerOrders(request)['shipping_address']
-	context = {'orders':orders_q_set, 'orderitems':orderitems, 'shipping_addresses':shipping_addresses}
+	customer_name = request.user.customer.name
+	customer_vk_link = request.user.customer.vk_link
+	customer_phone = request.user.customer.phone
+	customer_email = request.user.customer.email
+	context = {'orders':orders_q_set, 'orderitems':orderitems, 'shipping_addresses':shipping_addresses,
+	 'customer_name': customer_name, 'customer_vk_link':customer_vk_link, 'customer_phone':customer_phone, 'customer_email':customer_email}
 	return render(request, 'store/user.html', context)
 
 @unaunthenticated_user
@@ -120,8 +123,6 @@ def updateItem(request):
 
 	productId = data['productId']
 	action = data['action']
-	print('Action:', action)
-	print('Product:', productId)
 
 	customer = request.user.customer
 	product = Product.objects.get(id=productId)
@@ -144,7 +145,6 @@ def updateItem(request):
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
-	print("def processOrder(request): transaction_id = ", transaction_id)
 	if request.user.is_authenticated:
 		customer = request.user.customer
 		order, created = Order.objects.get_or_create(customer=customer, complete=False)
@@ -172,20 +172,19 @@ def processOrder(request):
 	return JsonResponse('Payment submitted..', safe=False)
 
 def newUserInfo(request):
-
 	data = json.loads(request.body)
-	print("data = ", data)
-	vk_link = data['form']['vklink']
-	phone = data['form']['phone']
-	customer = Customer.objects.all().filter(id=data['form']['id']).update(vk_link = vk_link,
-			phone = phone,)
-	print("customer:", customer)
-	"""customer, created = Customer.objects.get_or_create(
-			id = id,
-			name = name,
-			email = email,
-			vk_link = vk_link,
-			phone = phone,
-			) 
-	customer.save()"""
+	Customer.objects.all().filter(user_id=data['form']['id']).update(
+			name=data['form']['name'],
+			email=data['form']['email'],
+			vk_link = data['form']['vklink'],
+			phone = data['form']['phone'])
+	User.objects.all().filter(id=data['form']['id']).update(
+			username=data['form']['name'],
+			email=data['form']['email'],
+			)
+	if data['form']['password1'] == data['form']['password2'] and data['form']['password1'] !="":
+		users = User.objects.all().filter(id=data['form']['id'])
+		user=users[0]
+		user.set_password(data['form']['password1'])#'__enter passwd__')
+		user.save()
 	return JsonResponse('New info submitted..', safe=False)
