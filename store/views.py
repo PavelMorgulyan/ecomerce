@@ -48,6 +48,7 @@ def loginPage(request):
 
 def logoutPage(request):
 	logout(request)
+	print("User logouted")
 	return redirect('login')
 
 @login_required(login_url='login') # Стандартный декоратор из django.contrib.auth.decorators
@@ -92,7 +93,7 @@ def registrationPage(request):
 					#vk_link="",
 					)
 
-				messages.success(request, 'Account was created for' + username)
+				messages.success(request, 'Новый пользователь был создан под именем ' + username)
 				return redirect('login') # переходим в login.html
 
 		context = {'form':form}

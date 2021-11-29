@@ -31,14 +31,6 @@
 						<input required class="form-control" type="email" name="email" value="{{customer_email}}">
 					</div>
 					<div>
-						Новый пароль:
-						<input required class="form-control" type="password" name="password1" value="">
-					</div>
-					<div>
-						Новый пароль повторно:
-						<input required class="form-control" type="password" name="password2" value="">
-					</div>
-					<div>
 						Телефон:
 						<input required class="form-control" type="phone" name="phone" value="{{customer_phone}}">
 					</div>
@@ -47,6 +39,12 @@
 						<input required class="form-control" type="vk_link" name="vk_link" value="{{customer_vk_link}}">
 						<br>
 						<input class="btn btn-success" id="save-new-user-info" type="submit" value="Сохранить изменения"></input>
+					</div>
+					<div> 
+						<br>
+					</div>
+					<div>
+						<a href="{% url 'reset_password' %}" class="btn btn-success">Изменить пароль</a>
 					</div>
 					<div> 
 						<br>
@@ -119,7 +117,7 @@
 			</div>
 			{% endfor %}
 			<div class="box-element">
-				<a  class="btn btn-success" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+				<a  class="btn btn-success" href="{% url 'store' %}">&#x2190; Продолжить покупки</a>
 			</div>
 			
 

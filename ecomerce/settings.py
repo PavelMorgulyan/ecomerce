@@ -77,8 +77,14 @@ WSGI_APPLICATION = 'ecomerce.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':'DEMO_TEST',
+        'USER': 'postgres',
+        'PASSWORD':'11111',
+        'HOST': 'localhost',
+        'PORT':'5432', 
     }
 }
 
@@ -128,3 +134,13 @@ MEDIA_URL = '/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 PHONENUMBER_DIRS = [os.path.join(BASE_DIR, 'phonenumber_field')]
+
+# SMTP Configuration
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com" # "smtp.mail.ru"
+EMAIL_PORT = 587 # smtp tls port mail.ru - 465, gmail.ru - 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "pmorgukyan@gmail.com"
+EMAIL_HOST_PASSWORD = "1Qazxsw23edc@_%"
+ACCOUNT_EMAIL_VERIFICATION = 'none'

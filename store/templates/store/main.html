@@ -71,7 +71,7 @@
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="{% url 'store' %}">Ecom</a>
+		<a class="navbar-brand" href="{% url 'store' %}">Morg Ecom</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -79,18 +79,18 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="{% url 'store' %}">Магазин <span class="sr-only">(current)</span></a>
 				</li>
 				
 			</ul>
 		</div>
 			<div class="form-inline my-2 my-lg-0">
-				<span>Hello, {{request.user}}! </span>
+				<span>Здравствуйте, {{request.user}}! </span>
 				<!-- <a href="#" class="btn btn-warning">Login</a> -->
-				<a href="{% url 'user' %}" class="btn btn-warning">User information</a>
+				<a href="{% url 'user' %}" class="btn btn-warning">Информация о пользователе</a>
 				<p>  </p>
-				<a href="{% url 'login' %}" class="btn btn-warning">Login</a> <!-- in file urls.py path('cart/', views.cart, name="login") and def login(request) in models.py-->
-				<a href="{% url 'login' %}" class="btn btn-warning">Logout</a>
+				<a href="{% url 'login' %}" class="btn btn-warning">Войти</a> <!-- in file urls.py path('cart/', views.cart, name="login") and def login(request) in models.py-->
+				<a href="{% url 'logout' %}" class="btn btn-warning">Выйти</a>
 
 				<a href="{% url 'cart' %}">
 					<img id="cart-icon" src="{% static 'images/cart.png' %}">
