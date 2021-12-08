@@ -183,9 +183,4 @@ def newUserInfo(request):
 			username=data['form']['name'],
 			email=data['form']['email'],
 			)
-	if data['form']['password1'] == data['form']['password2'] and data['form']['password1'] !="":
-		users = User.objects.all().filter(id=data['form']['id'])
-		user=users[0]
-		user.set_password(data['form']['password1'])#'__enter passwd__')
-		user.save()
 	return JsonResponse('New info submitted..', safe=False)

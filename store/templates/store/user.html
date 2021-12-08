@@ -155,8 +155,6 @@
 				'email':null,
 				'phone':null,
 				'vklink':null,
-				'password1':null,
-				'password2':null,
 			}
 
 			userFormData.id = '{{request.user.id}}'
@@ -164,8 +162,6 @@
 	    	userFormData.email = form.email.value
 			userFormData.phone = form.phone.value
 			userFormData.vklink = form.vk_link.value
-			userFormData.password1 = form.password1.value
-			userFormData.password2 = form.password1.value
 			
 	    	console.log('User Info:', userFormData)
 
